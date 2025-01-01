@@ -1,0 +1,34 @@
+Bus 003 Device 009: ID 125f:db8a A-DATA Technology Co., Ltd. ADATA USB Flash Drive
+
+sudo dmesg
+
+lsusb
+
+lsusb -t
+
+ls /sys/bus/usb/drivers/usb-storage
+
+echo -n "4-1:1.0" > /sys/bus/usb/drivers/usb-storage/unbind
+
+echo -n "3-1:1.0" | sudo tee /sys/bus/usb/drivers/usb_driver_copy/bind
+
+echo -n "3-1:1.0" > /sys/bus/usb/drivers/usb_driver_copy/bind
+
+lsusb -t
+
+To run in terminal
+
+make
+
+sudo insmod usb_driver_copy.ko
+
+// To check all the system calls used by function
+sudo su
+cd /sys/kernel/debug/tracing
+echo function > current_tracer
+echo usb_driver_copy > /set_ftrace_filter
+
+echo 1 > tracing_on
+
+echo 0 > tracing_on
+cat trace
